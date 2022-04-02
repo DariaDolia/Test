@@ -2,16 +2,17 @@ def get_number():
     while True:
         try:
             number = int(input('\nВведите натуральное число: '))
-            if number == 0 or number == 1:
-                print('Это число не является ни простым, ни составным')
-            elif number < 0:
-                print('Простое число может быть только натуральным.')
-                print('То есть необходимо ввести целое, положительное число.')
-            else:
-                 return number
         except ValueError:
             print('Введено некоректоное значение.')
             print('Введите натуральное число.')
+            continue
+        if number == 0 or number == 1:
+            print('Это число не является ни простым, ни составным')
+        elif number < 0:
+            print('Простое число может быть только натуральным.')
+            print('То есть необходимо ввести целое, положительное число.')
+        else:
+             return number
 
 
 def is_prime(number):
