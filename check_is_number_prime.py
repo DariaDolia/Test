@@ -16,12 +16,10 @@ def get_number():
 
 
 def is_prime(number):
-    status = True    
     for divisor in range(2, number):
         if number % divisor == 0:
-            status = False
-            break
-    return status
+            return False
+    return True
 
 
 def main():
