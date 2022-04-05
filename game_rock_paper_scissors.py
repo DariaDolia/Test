@@ -31,7 +31,6 @@ def repeat_game():
     while True:
         print('\nВы хотите продолжить игру?')
         again = input('Введите да или нет: ').lower()
-        # repeat_choice = ['да', 'нет']
         if again not in ['да', 'нет']:
             print('\nВы ввели некорректное значение.')
             print('Повторите попытку.')
