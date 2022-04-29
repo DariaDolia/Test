@@ -71,8 +71,6 @@ def instruction():
     print('press 3 to shift up')
     print('press 4 to shift down')
     print('press 5 to end the game')
-    # choice = input('\nEnter your option: ')
-    # return choice
 
 
 def check_choice():
