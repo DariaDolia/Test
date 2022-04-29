@@ -1,18 +1,18 @@
 import random
 
-options = {1: 'камень', 2: 'ножницы', 3: 'бумага'}
+options = ['камень', 'ножницы', 'бумага']
 
 
 def user_choice():
     while True:
         user_option = input('\nВведите один из вариантов: камень, ножницы, бумага: ').lower()
-        if user_option not in options.values():
+        if user_option not in options:
             print('Некоректное значение. Повторите попытку')
         else:
             return user_option
 
 
-def winer(computer, user):
+def winner(computer, user):
     if computer == 'камень' and user == 'ножницы':
         print('\nПобедил компьютер, так как камень разбивает ножницы')
     elif computer == 'ножницы' and user == 'бумага':
@@ -31,7 +31,6 @@ def repeat_game():
     while True:
         print('\nВы хотите продолжить игру?')
         again = input('Введите да или нет: ').lower()
-        # repeat_choice = ['да', 'нет']
         if again not in ['да', 'нет']:
             print('\nВы ввели некорректное значение.')
             print('Повторите попытку.')
@@ -44,12 +43,12 @@ def main():
     while again == 'да':
         while True:
             user = user_choice()
-            computer = options[random.randint(1, 3)]  # рандомный выбор компьютера
+            computer = options[random.randint(0, 2)]  # рандомный выбор компьютера
             print(f'Выбор компьютера: {computer}')
             if user != computer:
                 break
             print('\nНичья. Играем повторный раунд')
-        winer(computer, user)
+        winner(computer, user)
         again = repeat_game()
 
 
