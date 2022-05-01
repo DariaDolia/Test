@@ -21,47 +21,18 @@ def puzzle_field(massive):
         print('---------------------')
 
 
-def shift_left(massive):
-    for i in range(4):
-        for j in range(4):
-            if massive[i][j] == ' ':
-                left_element = massive[i][j - 1]
-                if 0 < j <= 3:
-                    massive[i][j - 1] = ' '
-                    massive[i][j] = left_element
-    return massive
+def coordinate(massive):
+    for y in range(4):
+        for x in range(4):
+            if massive[y][x] == ' ':
+                return x, y
 
 
-def shift_right(massive):
-    for i in range(4):
-        for j in range(2, -1, -1):
-            if massive[i][j] == ' ':
-                right_element = massive[i][j + 1]
-                if 0 <= j < 3:
-                    massive[i][j + 1] = ' '
-                    massive[i][j] = right_element
-    return massive
-
-
-def shift_up(massive):
-    for i in range(4):
-        for j in range(4):
-            if massive[i][j] == ' ':
-                up_element = massive[i - 1][j]
-                if 0 < i <= 3:
-                    massive[i - 1][j] = ' '
-                    massive[i][j] = up_element
-    return massive
-
-
-def shift_down(massive):
-    for i in range(2, -1, -1):
-        for j in range(4):
-            if massive[i][j] == ' ':
-                down_element = massive[i + 1][j]
-                if 0 <= i < 3:
-                    massive[i + 1][j] = ' '
-                    massive[i][j] = down_element
+def shift(massive, x, y, x_change, y_change):
+    if 0 <= x_change <= 3 and 0 <= y_change <= 3:
+        element = massive[y_change][x_change]
+        massive[y_change][x_change] = ' '
+        massive[y][x] = element
     return massive
 
 
@@ -77,9 +48,13 @@ def check_choice():
     while True:
         try:
             choice = int(input('\nEnter your option: '))
-            return choice
         except ValueError:
             print('Invalid value. Try again')
+            continue
+        if choice not in [1, 2, 3, 4, 5]:
+            print('Number out of range. Enter a number from 1 till 5. ')
+        else:
+            return choice
 
 
 def main():
@@ -89,15 +64,16 @@ def main():
     while True:
         instruction()
         choice = check_choice()
+        x, y = coordinate(massive)
         if choice == 1:
-            new_massive = shift_left(massive)
+            new_massive = shift(massive, x, y, x - 1, y)
         elif choice == 2:
-            new_massive = shift_right(massive)
+            new_massive = shift(massive, x, y, x + 1, y)
         elif choice == 3:
-            new_massive = shift_up(massive)
+            new_massive = shift(massive, x, y, x, y - 1)
         elif choice == 4:
-            new_massive = shift_down(massive)
-        elif choice == 5:
+            new_massive = shift(massive, x, y, x, y + 1)
+        if choice == 5:
             break
         puzzle_field(new_massive)
 
