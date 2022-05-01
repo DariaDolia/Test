@@ -28,7 +28,20 @@ def coordinate(massive):
                 return x, y
 
 
-def shift(massive, x, y, x_change, y_change):
+def shift(massive, x_change, y_change):
+    x, y = coordinate(massive)
+    if x_change == 1:
+        x_change = x - 1
+        y_change = y
+    elif x_change == 2:
+        x_change = x + 1
+        y_change = y
+    elif y_change == 3:
+        x_change = x
+        y_change = y - 1
+    elif y_change == 4:
+        x_change = x
+        y_change = y + 1
     if 0 <= x_change <= 3 and 0 <= y_change <= 3:
         element = massive[y_change][x_change]
         massive[y_change][x_change] = ' '
@@ -64,15 +77,14 @@ def main():
     while True:
         instruction()
         choice = check_choice()
-        x, y = coordinate(massive)
         if choice == 1:
-            new_massive = shift(massive, x, y, x - 1, y)
+            new_massive = shift(massive, 1, 0)
         elif choice == 2:
-            new_massive = shift(massive, x, y, x + 1, y)
+            new_massive = shift(massive, 2, 0)
         elif choice == 3:
-            new_massive = shift(massive, x, y, x, y - 1)
+            new_massive = shift(massive, 0, 3)
         elif choice == 4:
-            new_massive = shift(massive, x, y, x, y + 1)
+            new_massive = shift(massive, 0, 4)
         if choice == 5:
             break
         puzzle_field(new_massive)
