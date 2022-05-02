@@ -1,15 +1,17 @@
 import random
 
+score = 0
+
 
 def create_massive():
     num = list(range(1, 16))
     num.append(' ')
-    mas = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    massive = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     for i in range(4):
         for j in range(4):
-            mas[i][j] = random.choice(num)
-            num.remove(mas[i][j])
-    return mas
+            massive[i][j] = random.choice(num)
+            num.remove(massive[i][j])
+    return massive
 
 
 def puzzle_field(massive):
@@ -30,21 +32,11 @@ def coordinate(massive):
 
 def shift(massive, x_change, y_change):
     x, y = coordinate(massive)
-    if x_change == 1:
-        x_change = x - 1
-        y_change = y
-    elif x_change == 2:
-        x_change = x + 1
-        y_change = y
-    elif y_change == 3:
-        x_change = x
-        y_change = y - 1
-    elif y_change == 4:
-        x_change = x
-        y_change = y + 1
-    if 0 <= x_change <= 3 and 0 <= y_change <= 3:
-        element = massive[y_change][x_change]
-        massive[y_change][x_change] = ' '
+    finish_x = x + x_change
+    finish_y = y + y_change
+    if 0 <= finish_x <= 3 and 0 <= finish_y <= 3:
+        element = massive[finish_y][finish_x]
+        massive[finish_y][finish_x] = ' '
         massive[y][x] = element
     return massive
 
@@ -78,13 +70,13 @@ def main():
         instruction()
         choice = check_choice()
         if choice == 1:
-            new_massive = shift(massive, 1, 0)
+            new_massive = shift(massive, -1, 0)
         elif choice == 2:
-            new_massive = shift(massive, 2, 0)
+            new_massive = shift(massive, 1, 0)
         elif choice == 3:
-            new_massive = shift(massive, 0, 3)
+            new_massive = shift(massive, 0, -1)
         elif choice == 4:
-            new_massive = shift(massive, 0, 4)
+            new_massive = shift(massive, 0, 1)
         if choice == 5:
             break
         puzzle_field(new_massive)
