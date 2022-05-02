@@ -1,7 +1,5 @@
 import random
 
-score = 0
-
 
 def create_massive():
     num = list(range(1, 16))
