@@ -5,15 +5,15 @@ def check_student_name():
     origin_file = open('student_list.txt', 'r')
     while True:
         student_name = input('Enter a student name to change grade: ')
-        has_name = False
         line = origin_file.readline()
+        has_name = False
         while line != '':
             if line.startswith(student_name):
                 print(f'Сейчас {line}')
                 has_name = True
                 break
             line = origin_file.readline()
-        if has_name is False:
+        if not has_name:
             print('Not find this name in the list. Try again\n')
             origin_file.seek(0)
         else:
@@ -25,12 +25,13 @@ def check_new_grade(student_name):
     while True:
         try:
             new_grade = int(input(f'Enter a new grande for {student_name}: '))
-            if new_grade not in range(0, 101):
-                print('Grade should be in range from 0 to 100\n')
-            else:
-                return new_grade
         except ValueError:
             print('Please, enter only numbers\n')
+            continue
+        if new_grade not in range(0, 101):
+            print('Grade should be in range from 0 to 100\n')
+        else:
+            return new_grade
 
 
 def change_grade(student_name, new_grade):
@@ -38,16 +39,11 @@ def change_grade(student_name, new_grade):
     temp_file = open('temp.txt', 'w')
     for line in origin_file:
         if line.startswith(student_name):
-            new_line = ''
-            for i in line:
-                if i not in '0123456789\n':
-                    new_line += i
-                else:
-                    if i == '\n':
-                        new_line += ' '
-                    new_line += str(new_grade)
-                    line = new_line + '\n'
-                    break
+            if ' ' in line:
+                name_grade_mas = line.split()
+            else:
+                name_grade_mas = line.split('\n')
+            line = f'{name_grade_mas[0]} {new_grade}\n'
         temp_file.write(line)
     origin_file.close()
     temp_file.close()

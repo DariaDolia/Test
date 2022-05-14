@@ -3,14 +3,13 @@ def step_per_month(position, days):
     total = 0
     file.seek(position)
     step = file.readline()
-    next_position = 0
     for i in range(days):
-        next_position += len(step)
+        position += len(step)
         total += int(step.rstrip('\n'))
         step = file.readline()
     average = int(total / days)
     file.close()
-    return average, next_position
+    return average, position
 
 
 def main():

@@ -1,13 +1,19 @@
+def check_numbers(check_is_integer, error_message):
+    try:
+        number = int(check_is_integer)
+        return number
+    except ValueError:
+        print(error_message)
+
+
 def choice_of_option():
     while True:
         print('If you wanna write a player\'s result press 1')
         print('If you wanna leave the program press 2')
-        try:
-            choice = int(input('\nEnter 1 or 2: '))
-            return choice
-        except ValueError:
-            print('You entered letters.\n')
-            continue
+        number = input('\nEnter 1 or 2: ')
+        number = check_numbers(number, 'You entered letters or nothing.\n')
+        if number is not None:
+            return number
 
 
 def player_name():
@@ -22,13 +28,10 @@ def player_name():
 
 def player_score():
     while True:
-        try:
-            game_score = int(input('Enter a score of the player: '))
-            print()
+        game_score = input('Enter a score of the player: ')
+        score = check_numbers(game_score, 'Enter only integer numbers\n')
+        if score is not None:
             return game_score
-        except ValueError:
-            print('Enter only integer numbers\n')
-            continue
 
 
 def main():
@@ -38,11 +41,12 @@ def main():
             name_of_player = player_name()
             game_score = player_score()
             file = open('golf.txt', 'a')
-            file.write(name_of_player + '\n')
-            file.write(str(game_score) + '\n')
-            print('The data was writen in the file\n')
-        elif choice == 2:
+            file.write(f'{name_of_player}\n')
+            file.write(f'{game_score}\n')
+            print('\nThe data was writen in the file\n')
             file.close()
+        elif choice == 2:
+            print('\nYou stoped the program')
             break
         else:
             print('You value out of range. Try again.\n')
