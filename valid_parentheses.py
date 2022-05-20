@@ -42,7 +42,7 @@ def valid_parentheses_3(string):
     return not braces_string
 
 
-print(valid_parentheses_3("()"))
+print(valid_parentheses_3("())"))
 
 
 assert valid_parentheses_3(")(()))") is False
