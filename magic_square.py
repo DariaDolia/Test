@@ -20,11 +20,11 @@ def create_numbers_list():
 
 def pictured_square(list_of_numbers):
     for i in range(3):
-        print('_____________')
+        print('_' * 13)
         for j in range(3):
             print(f'| {list_of_numbers[i][j]} ', end='')
         print('|')
-    print('_____________')
+    print('_' * 13)
 
 
 def total_rows_columns(list_of_numbers):
