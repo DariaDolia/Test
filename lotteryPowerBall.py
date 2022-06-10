@@ -25,10 +25,9 @@ def set_of_digits_from_file():
     file.close()
     for digit in list_of_digits:
         if digit in set_of_digit:
-            occurrences = set_of_digit[digit] + 1
+            set_of_digit[digit] += 1
         else:
-            occurrences = 1
-        set_of_digit[digit] = occurrences
+            set_of_digit[digit] = 1
     return set_of_digit
 
 
