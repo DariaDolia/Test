@@ -7,7 +7,7 @@ AMOUNT_OF_MOST_OFTEN_NUM = 10
 def create_lottery_numbers():
     file = open('numbers.txt', 'w')
     for i in range(100):
-        power_num = str(random.randint(1, 26)).zfill(2)
+        power_num = str(random.randint(1, 27)).zfill(2)
         for j in range(5):
             other_numbers = str(random.randint(1, 69)).zfill(2)
             file.write(f'{other_numbers} ')
@@ -23,8 +23,12 @@ def set_of_digits_from_file():
     for line in file:
         list_of_digits.extend(line.split())
     file.close()
-    for digit in set(list_of_digits):
-        set_of_digit[digit] = list_of_digits.count(digit)
+    for digit in list_of_digits:
+        if digit in set_of_digit:
+            occurrences = set_of_digit[digit] + 1
+        else:
+            occurrences = 1
+        set_of_digit[digit] = occurrences
     return set_of_digit
 
 
