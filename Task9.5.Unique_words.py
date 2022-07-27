@@ -20,8 +20,8 @@ def create_words_list(name_file):
 def create_words_list_without_punctuation(words_list):
     words_list_without_punctuation = []
     for word in words_list:
-        if word[len(word) - 1] in ',.!?':
-            word = word.replace(word[len(word) - 1], '')
+        if word[-1] in ',.!?':
+            word = word.replace(word[-1], '')
         words_list_without_punctuation.append(word)
 
     return words_list_without_punctuation
@@ -29,10 +29,9 @@ def create_words_list_without_punctuation(words_list):
 
 def dic_with_words_and_its_frequency(list_of_words):
     dic_words_and_frequency = {}
-    value = 0
 
     for word in list_of_words:
-        dic_words_and_frequency[word] = dic_words_and_frequency.setdefault(word, value) + 1
+        dic_words_and_frequency[word] = dic_words_and_frequency.setdefault(word, 0) + 1
     return dic_words_and_frequency
 
 
