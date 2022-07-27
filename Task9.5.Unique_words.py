@@ -1,8 +1,7 @@
 from collections import defaultdict
 
-INPUT_FILE = 'Text1.txt'
+INPUT_FILE = 'text.txt'
 OUTPUT_FILE = 'words_and_its_frequency.txt'
-ALPHABET_UKR = 'абвгґдеєжзиійїклмнопрстуфхцчщьюя'
 
 
 def main():
@@ -17,7 +16,7 @@ def dic_with_words_and_frequency(name_file):
         word = ''
 
         for letter in text_from_file.lower():
-            if letter in ALPHABET_UKR:
+            if letter not in ' .,;\n':
                 word += letter
             else:
                 if word != '':
