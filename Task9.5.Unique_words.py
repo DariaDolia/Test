@@ -2,37 +2,37 @@ from collections import defaultdict
 
 INPUT_FILE = 'Text1.txt'
 OUTPUT_FILE = 'words_and_its_frequency.txt'
+ALPHABET_UKR = 'абвгґдеєжзиійїклмнопрстуфхцчщьюя'
 
 
 def main():
     words_list = create_words_list(INPUT_FILE)
-    list_without_punctuation = create_words_list_without_punctuation(words_list)
-    dic_with_results = dic_with_words_and_its_frequency(list_without_punctuation)
+    dic_with_results = dic_with_words_and_its_frequency(words_list)
     create_file_with_results(OUTPUT_FILE, dic_with_results)
 
 
 def create_words_list(name_file):
     with open(name_file) as file:
         text_from_file = file.read()
-    words_list = text_from_file.lower().split()
+        words_list = []
+        word = text_from_file[0]
+
+        for letter in text_from_file[1:].lower():
+            if letter in ALPHABET_UKR:
+                word += letter
+            else:
+                words_list.append(word)
+                word = ''
 
     return words_list
-
-
-def create_words_list_without_punctuation(words_list):
-    words_list_without_punctuation = []
-    for word in words_list:
-        if word[-1] in ',.!?':
-            word = word.replace(word[-1], '')
-        words_list_without_punctuation.append(word)
-
-    return words_list_without_punctuation
 
 
 def dic_with_words_and_its_frequency(list_of_words):
     dic_words_and_frequency = defaultdict(int)
 
     for word in list_of_words:
+        if word == '':
+            continue
         dic_words_and_frequency[word] += 1
     return dic_words_and_frequency
 
