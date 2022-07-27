@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 INPUT_FILE = 'Text1.txt'
 OUTPUT_FILE = 'words_and_its_frequency.txt'
 
@@ -28,10 +30,10 @@ def create_words_list_without_punctuation(words_list):
 
 
 def dic_with_words_and_its_frequency(list_of_words):
-    dic_words_and_frequency = {}
+    dic_words_and_frequency = defaultdict(int)
 
     for word in list_of_words:
-        dic_words_and_frequency[word] = dic_words_and_frequency.setdefault(word, 0) + 1
+        dic_words_and_frequency[word] += 1
     return dic_words_and_frequency
 
 
