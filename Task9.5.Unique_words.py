@@ -6,15 +6,14 @@ ALPHABET_UKR = 'абвгґдеєжзиійїклмнопрстуфхцчщьюя
 
 
 def main():
-    words_list = create_words_list(INPUT_FILE)
-    dic_with_results = dic_with_words_and_its_frequency(words_list)
+    dic_with_results = dic_with_words_and_frequency(INPUT_FILE)
     create_file_with_results(OUTPUT_FILE, dic_with_results)
 
 
-def create_words_list(name_file):
+def dic_with_words_and_frequency(name_file):
     with open(name_file) as file:
         text_from_file = file.read()
-        words_list = []
+        dic_words_and_frequency = defaultdict(int)
         word = ''
 
         for letter in text_from_file.lower():
@@ -22,17 +21,8 @@ def create_words_list(name_file):
                 word += letter
             else:
                 if word != '':
-                    words_list.append(word)
+                    dic_words_and_frequency[word] += 1
                     word = ''
-
-    return words_list
-
-
-def dic_with_words_and_its_frequency(list_of_words):
-    dic_words_and_frequency = defaultdict(int)
-
-    for word in list_of_words:
-        dic_words_and_frequency[word] += 1
     return dic_words_and_frequency
 
 
