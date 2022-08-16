@@ -6,13 +6,8 @@ def main():
 def max_val(num_list):
     if len(num_list) == 1:
         return num_list[0]
-    else:
-        maximum = max_val(num_list[1:])
-        if num_list[0] > maximum:
-            max_v = num_list[0]
-        else:
-            max_v = maximum
-        return max_v
+    maximum = max_val(num_list[1:])
+    return max(num_list[0], maximum)
 
 
 main()
