@@ -1,12 +1,17 @@
 import sqlite3
 
+WIDTH_OF_NAME_COL = 15
+WIDTH_OF_CODE_COL = 6
+WIDTH_OF_SALARY_COL = 12
+FULL_WIDTH = WIDTH_OF_NAME_COL + WIDTH_OF_CODE_COL + WIDTH_OF_SALARY_COL + 3
+
 
 def create_new_db():
     with sqlite3.connect('employees.db') as db:
         cursor = db.cursor()
     cursor.execute("""create table if not exists employees_info(
         name text not null,
-        country_code check (country_code in ('UA', 'PL', 'UK')),
+        country_code text,
         salary integer);
         """)
 
@@ -16,20 +21,15 @@ def show_all_employees():
         cursor = db.cursor()
     cursor.execute('select * from employees_info')
     for name, country_code, salary in cursor.fetchall():
-        print(name.ljust(15, ' '), country_code.center(6, ' '), f"{salary:12,.2f}", '', sep='|')
+        print(name.ljust(WIDTH_OF_NAME_COL, ' '), country_code.center(WIDTH_OF_CODE_COL, ' '),
+              f"{salary:{WIDTH_OF_SALARY_COL},.2f}", '', sep='|')
 
 
 def create_new_employees(name, country_code, salary):
     with sqlite3.connect('employees.db') as db:
         cursor = db.cursor()
-    while True:
-        try:
-            cursor.execute('insert into employees_info values (?, ?, ?)', [name, country_code, salary])
-            db.commit()
-            return
-        except sqlite3.IntegrityError:
-            print('\nYou enter incorrect country code. Try again')
-            country_code = input('enter a country code : ').upper()
+        cursor.execute('insert into employees_info values (?, ?, ?)', [name, country_code, salary])
+        db.commit()
 
 
 def delete_employee(name_of_employee):
@@ -58,15 +58,21 @@ def main():
         option = int(input('\nChoose an option from list above: '))
         if option == 1:
             print()
-            print('name'.center(15, ' '), 'code'.center(6, ' '), 'salary ($)'.center(12, ' '), '', sep='|')
-            print('-' * 36)
+            print('name'.center(WIDTH_OF_NAME_COL, ' '), 'code'.center(WIDTH_OF_CODE_COL, ' '),
+                  'salary ($)'.center(WIDTH_OF_SALARY_COL, ' '), '', sep='|')
+            print('-' * FULL_WIDTH)
             show_all_employees()
 
         elif option == 2:
             name = input('enter a name: ').title()
-            country_code = input('enter a country code UA, PL, UK: ').upper()
-            salary = float(input('enter a salary: '))
-            create_new_employees(name, country_code, salary)
+            while True:
+                country_code = input('enter a country code UA, PL, UK: ').upper()
+                if country_code in ['UA', 'PL', 'UK']:
+                    salary = float(input('enter a salary: '))
+                    create_new_employees(name, country_code, salary)
+                    break
+                else:
+                    print('\nYou enter incorrect country code. Try again')
 
         elif option == 3:
             name_of_employee = input('\nEnter a NAME of employee you wanna delete: ').title()
