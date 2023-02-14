@@ -28,10 +28,8 @@ def create_new_employees(connection_obj, name, country_code, salary):
 
 def delete_employee(connection_obj, name_of_employee):
     cursor = connection_obj.cursor()
-    cursor.execute('select name from employees_info')
-    for name in cursor:
-        if name[0] == name_of_employee:
-            cursor.execute('delete from employees_info where name=?', [name_of_employee])
-            connection_obj.commit()
-            return
+    cursor.execute('delete from employees_info where name=?', [name_of_employee])
+    if cursor.rowcount:
+        connection_obj.commit()
+        return
     print('There is not such name in the table')
