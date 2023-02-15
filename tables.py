@@ -6,9 +6,9 @@ def create_connection(db_name):
         return connection
 
 
-def create_table(connection_object, table):
+def create_table(connection_object, table_description):
     cursor = connection_object.cursor()
-    cursor.execute(table)
+    cursor.execute(table_description)
 
 
 def check_if_table_exists(connection_obj, table):

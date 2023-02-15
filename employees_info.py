@@ -3,10 +3,10 @@ import tables
 import options
 
 
-WIDTH_OF_NAME_COL = 15
-WIDTH_OF_COUNTRY_COL = 15
-WIDTH_OF_SALARY_COL = 12
-FULL_WIDTH = WIDTH_OF_NAME_COL + WIDTH_OF_COUNTRY_COL + WIDTH_OF_SALARY_COL + 3
+WIDTH_NAME_COL = 15
+WIDTH_COUNTRY_COL = 18
+WIDTH_SALARY_COL = 15
+FULL_WIDTH = WIDTH_NAME_COL + WIDTH_COUNTRY_COL + WIDTH_SALARY_COL + 3
 
 
 create_employees_info = """create table employees_info(
@@ -38,11 +38,7 @@ def main():
             continue
 
         if option == 1:
-            print()
-            print('name'.center(WIDTH_OF_NAME_COL, ' '), 'country'.center(WIDTH_OF_COUNTRY_COL, ' '),
-                  'salary ($)'.center(WIDTH_OF_SALARY_COL, ' '), '', sep='|')
-            print('-' * FULL_WIDTH)
-            options.show_all_employees(connection, WIDTH_OF_NAME_COL, WIDTH_OF_COUNTRY_COL, WIDTH_OF_SALARY_COL)
+            options.show_all_employees(connection, WIDTH_NAME_COL, WIDTH_COUNTRY_COL, WIDTH_SALARY_COL, FULL_WIDTH)
 
         elif option == 2:
             name = input('enter a name: ').title().rstrip()
@@ -60,6 +56,9 @@ def main():
             options.delete_employee(connection, name_of_employee)
 
         elif option == 4:
+            options.country_statistics(connection, WIDTH_COUNTRY_COL)
+
+        elif option == 5:
             return
 
 
