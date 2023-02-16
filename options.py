@@ -43,10 +43,11 @@ def delete_employee(connection_obj, name_of_employee):
 
 
 def country_statistics(connection_obj, width_country):
-    query_group_by_country = """select (select c.country from countries c where e.country_code = c.code) country, 
+    query_group_by_country = """select c.country country, 
         count(*) num_of_employees, 
         sum(salary) tot_salary, max(salary) max_salary 
-        from employees_info e
+        from employees_info e left join countries c 
+        on e.country_code = c.code
         group by country;"""
 
     cursor = connection_obj.cursor()
