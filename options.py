@@ -11,9 +11,14 @@ def options():
 def show_all_employees(connection_obj, width_name, width_country, width_salary, full_width):
 
     cursor = connection_obj.cursor()
-    cursor.execute("""select e.name, c.country, e.salary 'salary ($)' 
-        from employees_info e left join countries c
-        on e.country_code = c.code""")
+    cursor.execute("""select e.name, 
+            case 
+                when c.country IS NULL then 'Unknown'
+                else c.country
+            end country, 
+            e.salary 'salary ($)' 
+            from employees_info e left join countries c
+            on e.country_code = c.code""")
 
     col_names = [cn[0] for cn in cursor.description]
 
@@ -22,8 +27,6 @@ def show_all_employees(connection_obj, width_name, width_country, width_salary, 
     print('-' * full_width)
 
     for name, country, salary in cursor.fetchall():
-        if country is None:
-            country = ''
         print(f'{name:{width_name}}|{country.center(width_country)}|{salary:{width_salary},.2f}|')
 
 
@@ -43,25 +46,27 @@ def delete_employee(connection_obj, name_of_employee):
 
 
 def country_statistics(connection_obj, width_country):
-    query_group_by_country = """select c.country country, 
-        count(*) num_of_employees, 
-        sum(salary) tot_salary, max(salary) max_salary 
-        from employees_info e left join countries c 
-        on e.country_code = c.code
-        group by country;"""
+    query_group_by_country = """select 
+            case 
+                when c.country IS NULL then 'Unknown'
+                else c.country
+                end country, 
+            count(*) num_of_employees, 
+            sum(salary) tot_salary, max(salary) max_salary 
+            from employees_info e left join countries c 
+            on e.country_code = c.code
+            group by country;"""
 
     cursor = connection_obj.cursor()
     cursor.execute(query_group_by_country)
 
     col_names = [cn[0] for cn in cursor.description]
 
-    print(f'{col_names[0].center(width_country)}|{col_names[1].center(len(col_names[1])+2)}|'
+    print(f'\n{col_names[0].center(width_country)}|{col_names[1].center(len(col_names[1])+2)}|'
           f'{col_names[2].center(len(col_names[2])+5)}|{col_names[3].center(len(col_names[3])+5)}')
 
     print('-' * (width_country + len(col_names[1]) + len(col_names[2]) + len(col_names[3]) + 15))
 
     for country, num_employees, tot_sal, max_sal in cursor:
-        if country is None:
-            country = ''
         print(f'{country:{width_country}}|{num_employees:{len(col_names[1]) + 2}}|'
               f'{tot_sal:{len(col_names[2])+5},.2f}|{max_sal:{len(col_names[3])+5},.2f}')
