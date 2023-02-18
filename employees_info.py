@@ -3,10 +3,10 @@ import tables
 import options
 
 
-WIDTH_NAME_COL = 15
-WIDTH_COUNTRY_COL = 18
-WIDTH_SALARY_COL = 15
-FULL_WIDTH = WIDTH_NAME_COL + WIDTH_COUNTRY_COL + WIDTH_SALARY_COL + 3
+# WIDTH_NAME_COL = 20
+# WIDTH_COUNTRY_COL = 20
+# WIDTH_SALARY_COL = 20
+# FULL_WIDTH = WIDTH_NAME_COL + WIDTH_COUNTRY_COL + WIDTH_SALARY_COL + 3
 
 
 create_employees_info = """create table employees_info(
@@ -33,12 +33,13 @@ def main():
         options.options()
         try:
             option = int(input('\nChoose an option from list above: '))
+            print()
         except ValueError:
             print('You entered invalid value. Try again')
             continue
 
         if option == 1:
-            options.show_all_employees(connection, WIDTH_NAME_COL, WIDTH_COUNTRY_COL, WIDTH_SALARY_COL, FULL_WIDTH)
+            options.show_all_employees(connection, width_name=20, width_country=20, width_salary=20)
 
         elif option == 2:
             name = input('enter a name: ').title().rstrip()
@@ -56,7 +57,7 @@ def main():
             options.delete_employee(connection, name_of_employee)
 
         elif option == 4:
-            options.country_statistics(connection, WIDTH_COUNTRY_COL)
+            options.country_statistics(connection, width_country=20, width_name=15, width_salary=20)
 
         elif option == 5:
             return

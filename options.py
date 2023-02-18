@@ -1,3 +1,5 @@
+import tables
+
 
 def options():
     print()
@@ -8,23 +10,14 @@ def options():
     print('5. Exit')
 
 
-def show_all_employees(connection_obj, width_name, width_country, width_salary, full_width):
-
+def show_all_employees(connection_obj, width_name, width_country, width_salary):
     cursor = connection_obj.cursor()
-    cursor.execute("""select e.name, 
-            case 
-                when c.country IS NULL then 'Unknown'
-                else c.country
-            end country, 
-            e.salary 'salary ($)' 
+    cursor.execute("""select 
+            e.name, coalesce(c.country, 'Unknown') country, e.salary 'salary ($)' 
             from employees_info e left join countries c
             on e.country_code = c.code""")
 
-    col_names = [cn[0] for cn in cursor.description]
-
-    print(f'\n{col_names[0].center(width_name)}|{col_names[1].center(width_country)}|'
-          f'{col_names[2].center(width_salary)}|')
-    print('-' * full_width)
+    tables.column_names(cursor, name=width_name, country=width_country, salary=width_salary)
 
     for name, country, salary in cursor.fetchall():
         print(f'{name:{width_name}}|{country.center(width_country)}|{salary:{width_salary},.2f}|')
@@ -45,14 +38,10 @@ def delete_employee(connection_obj, name_of_employee):
     print('There is not such name in the table')
 
 
-def country_statistics(connection_obj, width_country):
+def country_statistics(connection_obj, width_country, width_name, width_salary):
     query_group_by_country = """select 
-            case 
-                when c.country IS NULL then 'Unknown'
-                else c.country
-                end country, 
-            count(*) num_of_employees, 
-            sum(salary) tot_salary, max(salary) max_salary 
+            coalesce(c.country, 'Unknown') country, count(*) num_employees, 
+            sum(salary) 'tot_salary ($)', max(salary) 'max_salary ($)'
             from employees_info e left join countries c 
             on e.country_code = c.code
             group by country;"""
@@ -60,13 +49,9 @@ def country_statistics(connection_obj, width_country):
     cursor = connection_obj.cursor()
     cursor.execute(query_group_by_country)
 
-    col_names = [cn[0] for cn in cursor.description]
-
-    print(f'\n{col_names[0].center(width_country)}|{col_names[1].center(len(col_names[1])+2)}|'
-          f'{col_names[2].center(len(col_names[2])+5)}|{col_names[3].center(len(col_names[3])+5)}')
-
-    print('-' * (width_country + len(col_names[1]) + len(col_names[2]) + len(col_names[3]) + 15))
+    tables.column_names(cursor, country=width_country, name=width_name,
+                        tot_salary=width_salary, max_salary=width_salary)
 
     for country, num_employees, tot_sal, max_sal in cursor:
-        print(f'{country:{width_country}}|{num_employees:{len(col_names[1]) + 2}}|'
-              f'{tot_sal:{len(col_names[2])+5},.2f}|{max_sal:{len(col_names[3])+5},.2f}')
+        print(f'{country:{width_country}}|{num_employees:{width_name}}|'
+              f'{tot_sal:{width_salary},.2f}|{max_sal:{width_salary},.2f}|')
