@@ -32,13 +32,27 @@ def data_for_countries_table(connection_obj):
 
 
 def column_names(cursor, **kwargs):
-
     col_names = [cn[0] for cn in cursor.description]
-    full_width = len(kwargs)
 
-    for num, width in enumerate(kwargs):
-        print(f'{col_names[num].center(kwargs[width])}|', end='')
-        full_width += kwargs[width]
+    print(''.join([col_names[num].center(kwargs[width]) + '|' for num, width in enumerate(kwargs)]))
+    print(''.join(["-" * kwargs[width] + '-' for width in kwargs]))
 
-    print("\n", "-" * full_width)
+
+def width_of_columns(cursor, full_data):
+    width_of_longest_data = []
+    for i in range(len(full_data[0])):
+        width_of_longest_data.append(max(len(str(data[i])) for data in full_data))
+
+    width_of_col_names = [len(cn[0]) for cn in cursor.description]
+
+    col_width = []
+    for k, m in zip(width_of_longest_data, width_of_col_names):
+        if k > m:
+            col_width.append(k + 3)
+        else:
+            col_width.append(m + 3)
+
+    return col_width
+
+
 
