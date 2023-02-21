@@ -1,27 +1,12 @@
-
 import tables
 import options
 
-
-create_employees_info = """create table employees_info(
-    name text not null,
-    country_code text,
-    salary real not null);"""
-
-create_countries = """create table countries (
-        code text not null,
-        country text not null);"""
+table_names = ['employees_info', 'countries']
 
 
 def main():
     connection = tables.create_connection('employees.db')
-
-    if tables.check_if_table_exists(connection, 'employees_info') is False:
-        tables.create_table(connection, create_employees_info)
-
-    if tables.check_if_table_exists(connection, 'countries') is False:
-        tables.create_table(connection, create_countries)
-        tables.data_for_countries_table(connection)
+    tables.create_table(connection, table_names, tables.table_descriptions)
 
     while True:
         options.options()

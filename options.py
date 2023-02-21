@@ -22,11 +22,10 @@ def show_all_employees(connection_obj):
         print('There are no data at the moment')
         return
 
-    width1, width2, width3 = tables.width_of_columns(cursor, data)
-    tables.column_names(cursor, name=width1, country=width2, salary=width3)
+    d = {key: value for key, value in zip(('name', 'country', 'salary'), tables.width_of_columns(cursor, data))}
 
     for name, country, salary in data:
-        print(f'{name:{width1}}|{country.center(width2)}|{salary:{width3},.2f}|')
+        print(f'{name:{d["name"]}}|{country.center(d["country"])}|{salary:{d["salary"]},.2f}|')
 
 
 def create_new_employees(connection_obj, name, country_code, salary):
@@ -60,8 +59,9 @@ def country_statistics(connection_obj):
         print('There are no data at the moment')
         return
 
-    width1, width2, width3, width4 = tables.width_of_columns(cursor, data)
-    tables.column_names(cursor, country=width1, name=width2, tot_salary=width3, max_salary=width4)
+    d = {key: value for key, value in zip(('country', 'num', 'tot_salary', 'max_salary'),
+                                          tables.width_of_columns(cursor, data))}
 
     for country, num_employees, tot_sal, max_sal in data:
-        print(f'{country:{width1}}|{num_employees:{width2}}|{tot_sal:{width3},.2f}|{max_sal:{width4},.2f}|')
+        print(f'{country:{d["country"]}}|{num_employees:{d["num"]}}|{tot_sal:{d["tot_salary"]},.2f}|'
+              f'{max_sal:{d["max_salary"]},.2f}|')
