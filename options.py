@@ -11,21 +11,15 @@ def options():
 
 
 def show_all_employees(connection_obj):
-    cursor = connection_obj.cursor()
-    cursor.execute("""select 
+    table_for_employees_info = """select 
             e.name, coalesce(c.country, 'Unknown') country, e.salary 'salary ($)' 
             from employees_info e left join countries c
-            on e.country_code = c.code""")
+            on e.country_code = c.code"""
 
+    cursor = connection_obj.cursor()
+    cursor.execute(table_for_employees_info)
     data = cursor.fetchall()
-    if not data:
-        print('There are no data at the moment')
-        return
-
-    d = {key: value for key, value in zip(('name', 'country', 'salary'), tables.width_of_columns(cursor, data))}
-
-    for name, country, salary in data:
-        print(f'{name:{d["name"]}}|{country.center(d["country"])}|{salary:{d["salary"]},.2f}|')
+    tables.table_output(cursor, data)
 
 
 def create_new_employees(connection_obj, name, country_code, salary):
@@ -44,7 +38,7 @@ def delete_employee(connection_obj, name_of_employee):
 
 
 def country_statistics(connection_obj):
-    query_group_by_country = """select 
+    table_for_statistics = """select 
             coalesce(c.country, 'Unknown') country, count(*) num_employees, 
             sum(salary) 'total salary ($)', max(salary) 'max salary ($)'
             from employees_info e left join countries c 
@@ -52,16 +46,6 @@ def country_statistics(connection_obj):
             group by country;"""
 
     cursor = connection_obj.cursor()
-    cursor.execute(query_group_by_country)
+    cursor.execute(table_for_statistics)
     data = cursor.fetchall()
-
-    if not data:
-        print('There are no data at the moment')
-        return
-
-    d = {key: value for key, value in zip(('country', 'num', 'tot_salary', 'max_salary'),
-                                          tables.width_of_columns(cursor, data))}
-
-    for country, num_employees, tot_sal, max_sal in data:
-        print(f'{country:{d["country"]}}|{num_employees:{d["num"]}}|{tot_sal:{d["tot_salary"]},.2f}|'
-              f'{max_sal:{d["max_salary"]},.2f}|')
+    tables.table_output(cursor, data)
