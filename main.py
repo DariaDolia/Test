@@ -1,21 +1,17 @@
-import functions
+import class_api_url
 from options_menu import options
 
 
 def main():
     while True:
         chosen_option = options()
-
         if chosen_option == 1:
-            functions.get_ip_address()
+            ip_address_url = class_api_url.IpAddressApi()
+            print(ip_address_url)
 
         elif chosen_option == 2:
-            data = functions.get_city()
-            if data:
-                city, latitude, longitude = functions.get_city_coordinates(data)
-                functions.get_weather(city, latitude, longitude)
-            elif not data:
-                print('There is no such city.')
+            weather_in_the_city = class_api_url.CurrentWeatherApi()
+            weather_in_the_city.get_current_weather()
 
         elif chosen_option == 3:
             return
