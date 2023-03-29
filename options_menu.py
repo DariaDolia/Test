@@ -1,3 +1,5 @@
+from class_api_url import *
+
 
 def options():
     while True:
@@ -11,3 +13,13 @@ def options():
             return chosen_option
         except ValueError:
             print('Invalid value. Enter a number from the list\n')
+
+
+class Result:
+
+    @staticmethod
+    def show_result(num):
+        if num == 1:
+            IpAddressApi().get_result()
+        elif num == 2:
+            CurrentWeatherApi().get_result()

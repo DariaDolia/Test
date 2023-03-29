@@ -1,26 +1,12 @@
-import functions
-from options_menu import options
+import options_menu
 
 
 def main():
-    while True:
-        chosen_option = options()
-
-        if chosen_option == 1:
-            functions.get_ip_address()
-
-        elif chosen_option == 2:
-            data = functions.get_city()
-            if data:
-                city, latitude, longitude = functions.get_city_coordinates(data)
-                functions.get_weather(city, latitude, longitude)
-            elif not data:
-                print('There is no such city.')
-
-        elif chosen_option == 3:
-            return
-        else:
-            print('Your choice out of scope\n')
+    chosen_option = 1
+    while chosen_option != 3:
+        chosen_option = options_menu.options()
+        res = options_menu.Result
+        res.show_result(chosen_option)
 
 
 if __name__ == '__main__':
